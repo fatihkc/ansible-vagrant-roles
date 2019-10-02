@@ -1,0 +1,61 @@
+---
+
+- name: Download WP-CLI
+  shell: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+- name: Make WP-CLI executable
+  file:
+    path: /home/vagrant/wp-cli.phar
+    mode: u=rwx,g=rx,o=rx
+
+- name: Move WP-CLI to /usr/local/bin/wp
+  command: mv /home/vagrant/wp-cli.phar /usr/bin/wp
+
+- name: Create WordPress database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: Create WordPress database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+
+- name: Create Wordpress directory
+  file:
+    path: "/var/www/html/wordpress"
+    state: directory
+    mode: "0755"
+
+- name: Download WordPress
+  command: wp core download --allow-root --version={{ wp_version }}
+  args:
+      chdir: "/var/www/html/wordpress/"
+  remote_user: "vagrant"
+
+- name: Configure WordPress
+  command: wp core config
+           --allow-root
+           --path="/var/www/html/wordpress"
+           --dbname="{{ wp_db_name }}"
+           --dbuser="{{ wp_db_user }}"
+           --dbpass="{{ wp_db_password }}"
+
+- name: Install WordPress tables
+  command: wp core install
+            --allow-root
+            --url="server.example.com"
+            --title="Test"
+            --admin_user="admin"
+            --admin_password="admin"
+            --admin_email="admin@example.com"
+            --path="/var/www/html/wordpress"
+
+- name: Create uploads directory
+  file:
+    path: "/var/www/html/wordpress/wp-content/uploads"
+    state: directory
+    mode: "0755"
+
+- name: Change ownership
+  file: 
+    path: "/var/www/html/wordpress/wp-content/uploads" 
+    owner: nginx 
+    group: nginx
+    mode: '0644'
