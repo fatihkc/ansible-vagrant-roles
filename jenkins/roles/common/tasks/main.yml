@@ -1,0 +1,30 @@
+---
+- name: Download Jenkins Repo
+  get_url:
+    url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+    mode: '0640'
+
+- rpm_key:
+    state: present
+    key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: Install jenkins packages and dependencies
+  yum: name=jenkins state=present
+
+- name: Start Jenkins Service
+  service: name=jenkins state=started enabled=yes
+
+- firewalld:
+    port: 8080/tcp
+    permanent: yes
+    state: enabled  
+
+- name: init password jenkin
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: print init password jenkins
+  debug:
+    var: result.stdout
