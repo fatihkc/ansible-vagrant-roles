@@ -1,0 +1,12 @@
+---
+- name: Install ELK Stack
+  hosts: all
+  remote_user: vagrant
+  become: yes
+
+  roles:
+    - java
+    - elasticsearch
+    - kibana
+    - logstash
+    - filebeat

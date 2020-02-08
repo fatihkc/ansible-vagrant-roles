@@ -1,0 +1,23 @@
+---
+- name: Install Kibana
+  yum: name=kibana state=present
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.host:'
+   line: 'server.host: "{{ kibana_ip }}"'
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'elasticsearch.hosts:'
+   line: 'elasticsearch.hosts: ["http://localhost:{{ elasticsearch_port }}"]'
+
+- name: Start Kibana Service
+  service: name=kibana state=started enabled=yes
+
+- firewalld:
+    port: 5601/tcp
+    permanent: yes
+    state: enabled

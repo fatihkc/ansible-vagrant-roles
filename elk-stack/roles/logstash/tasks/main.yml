@@ -1,0 +1,27 @@
+---
+- name: Install Logstash
+  yum: name=logstash state=present
+
+- name: Updating the Xms in jvm.options file 
+  lineinfile:
+   destfile: /etc/logstash/jvm.options
+   regexp: '-Xms'
+   line: '-Xms1g'
+
+- name: Updating the Xmx in jvm.options file 
+  lineinfile:
+   destfile: /etc/logstash/jvm.options
+   regexp: '-Xmx'
+   line: '-Xmx1g'
+
+- name: Copy config files
+  template: src=input-beat.conf dest=/etc/logstash/conf.d/input-beat.conf
+
+- name: Copy config files
+  template: src=syslog-filter.conf dest=/etc/logstash/conf.d/syslog-filter.conf
+
+- name: Copy config files
+  template: src=output-elasticsearch.conf dest=/etc/logstash/conf.d/output-elasticsearch.conf
+
+- name: Start Logstash Service
+  service: name=logstash state=started enabled=yes

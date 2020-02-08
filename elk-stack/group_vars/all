@@ -1,0 +1,7 @@
+server_ip: 192.168.50.50
+server_hostname: master
+elasticsearch_ip: 127.0.0.1
+elasticsearch_port: 9200
+kibana_ip: 0.0.0.0
+kibana_port: 5601
+kibana_elasticsearch_connection: ["http://localhost:9200"]

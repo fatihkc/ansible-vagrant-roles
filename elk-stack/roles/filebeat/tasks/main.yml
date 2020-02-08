@@ -1,0 +1,22 @@
+---
+- name: Install Filebeat
+  yum: name=filebeat state=present
+
+- name: Copy filebeat.yml file
+  template: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+- name: Copy system module config
+  template: src=system.yml dest=/etc/filebeat/modules.d/system.yml
+
+- name: Filebeat system module
+  shell: filebeat modules enable system
+
+
+- name: Start Filebeat Service
+  service: name=filebeat state=started enabled=yes
+
+- name: Install Metricbeat
+  yum: name=metricbeat state=present
+
+- name: Start Metricbeat Service
+  service: name=metricbeat state=started enabled=yes

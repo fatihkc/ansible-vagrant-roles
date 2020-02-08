@@ -7,7 +7,7 @@ Prerequisites;
 
 - Ansible 1.2 or newer
 - Vagrant 2.2 or newer
-
+- Make your that you changed hosts file
 
 For creating virtual machine;
 
