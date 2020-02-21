@@ -1,0 +1,41 @@
+---
+- name: Install PostgreSQL repo
+  dnf:
+    name: 'https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
+    state: present
+
+- name: Disable postgresql module with dnf
+  shell: dnf module disable -y postgresql
+
+- name: Install PostgreSQL 12 and Psycopg2 packages
+  dnf:
+    name: 
+      - postgresql12-server 
+      - postgresql12
+      - python3-psycopg2
+    state: latest
+
+- name: Initialize PostgreSQL
+  shell: /usr/pgsql-12/bin/postgresql-12-setup initdb
+
+- name: Copy pg_hba.conf file
+  template: src=pg_hba.conf dest=/var/lib/pgsql/12/data/pg_hba.conf
+
+- name: Start PostgreSQL-12 Service
+  service: name=postgresql-12 state=started enabled=yes
+
+- name: Add sonar user to database
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: sonar
+    password: test
+    role_attr_flags: CREATEDB
+
+- name: Create sonar database
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: sonar
+    encoding: UTF-8
+    owner: sonar

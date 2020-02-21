@@ -1,0 +1,64 @@
+---
+
+- name: Install Unzip package
+  dnf: name=unzip state=present
+
+- name: Download and extract SonarQube 8.1
+  unarchive:
+    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.1.0.31237.zip
+    dest: /opt
+    remote_src: yes
+
+- name: Change sonarqube directory name
+  shell: mv /opt/sonarqube-8.1.0.31237 /opt/sonarqube
+
+- name: Create sonar user
+  user:
+    name: sonar
+
+- name: Change ownership of /opt/sonarqube
+  file:
+    path: /opt/sonarqube
+    state: directory
+    recurse: yes
+    owner: sonar
+    group: sonar
+
+- name: Create /var/sonarqube/temp
+  file:
+    path: /var/sonarqube/temp
+    state: directory
+    owner: sonar
+    group: sonar
+    mode: '0755'
+
+- name: Create /var/sonarqube/data
+  file:
+    path: /var/sonarqube/data
+    state: directory
+    owner: sonar
+    group: sonar
+    mode: '0755'
+
+- name: Copy sonarqube.properties file
+  template: src=sonar.properties dest=/opt/sonarqube/conf/sonar.properties
+
+- name: Copy sonarqube.service file
+  template: src=sonarqube.service dest=/etc/systemd/system/sonarqube.service
+
+- name: VM
+  shell: sysctl -w vm.max_map_count=262144
+
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Start SonarQube service
+  service:
+    name: sonarqube
+    state: started
+
+- firewalld:
+    port: 9000/tcp
+    permanent: yes
+    state: enabled

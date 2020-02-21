@@ -3,11 +3,11 @@
     state: present
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-- name: Copy elasticsearch repository information
+- name: Copy Elasticsearch repository information
   template: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
 
 - name: Install Elasticsearch
-  yum: name=elasticsearch state=present
+  dnf: name=elasticsearch state=present
 
 - name: Updating the config file to allow outside access
   lineinfile:

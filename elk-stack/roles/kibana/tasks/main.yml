@@ -1,6 +1,6 @@
 ---
 - name: Install Kibana
-  yum: name=kibana state=present
+  dnf: name=kibana state=present
 
 - name: Updating the config file to allow outside access
   lineinfile:

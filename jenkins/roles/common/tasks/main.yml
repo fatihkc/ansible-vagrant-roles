@@ -9,8 +9,8 @@
     state: present
     key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
 
-- name: Install jenkins packages and dependencies
-  yum: name=jenkins state=present
+- name: Install Jenkins packages and dependencies
+  dnf: name=jenkins state=present
 
 - name: Start Jenkins Service
   service: name=jenkins state=started enabled=yes

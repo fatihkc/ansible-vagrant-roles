@@ -1,6 +1,6 @@
 ---
 - name: Install Logstash
-  yum: name=logstash state=present
+  dnf: name=logstash state=present
 
 - name: Updating the Xms in jvm.options file 
   lineinfile:
@@ -14,13 +14,13 @@
    regexp: '-Xmx'
    line: '-Xmx1g'
 
-- name: Copy config files
+- name: Copy input-beat config file
   template: src=input-beat.conf dest=/etc/logstash/conf.d/input-beat.conf
 
-- name: Copy config files
+- name: Copy syslog-filter config file
   template: src=syslog-filter.conf dest=/etc/logstash/conf.d/syslog-filter.conf
 
-- name: Copy config files
+- name: Copy output-elasticsearch config file
   template: src=output-elasticsearch.conf dest=/etc/logstash/conf.d/output-elasticsearch.conf
 
 - name: Start Logstash Service
