@@ -1,0 +1,30 @@
+---
+- name: Install MariaDB packages
+  dnf:
+    name:
+      - mariadb-server
+      - python3-PyMySQL
+    state: present
+
+- name: Create Mysql configuration file
+  template: src=my.cnf dest=/etc/my.cnf
+  notify:
+  - restart mariadb
+
+- name: Create MariaDB log file
+  file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
+
+- name: Start MariaDB Service
+  service: name=mariadb state=started enabled=yes
+
+- name: Create nextcloud database
+  mysql_db:
+    name: nextcloud
+    state: present
+
+- name: Create database user with password and all database privileges and 'WITH GRANT OPTION'
+  mysql_user:
+    name: nextcloud
+    password: test
+    priv: '*.*:ALL,GRANT'
+    state: present

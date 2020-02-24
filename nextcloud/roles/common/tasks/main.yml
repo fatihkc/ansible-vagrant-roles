@@ -1,0 +1,36 @@
+---
+- name: Install Php and unzip packages
+  dnf:
+    name:
+      - php
+      - php-mysqlnd
+      - php-fpm
+      - php-opcache
+      - php-common
+      - php-gd
+      - php-json
+      - php-curl
+      - php-zip
+      - php-xml
+      - php-mbstring
+      - php-bz2
+      - php-intl
+      - unzip
+    state: present
+
+- name: Start Php-fpm
+  service: name=php-fpm state=started enabled=yes
+
+- name: Download and extract NextCloud 18.0.1
+  unarchive:
+    src: https://download.nextcloud.com/server/releases/nextcloud-18.0.1.zip
+    dest: /usr/share/nginx/
+    remote_src: yes
+
+- name: Change ownership of /usr/share/nginx
+  file:
+    path: /usr/share/nginx
+    state: directory
+    recurse: yes
+    owner: nginx
+    group: nginx

@@ -9,7 +9,7 @@ This project includes;
 - Jenkins
 - ELK Stack
 - Sonarqube
-- NextCloud (coming soon)
+- NextCloud
 - JMeter (coming soon)
 - OpenLDAP (coming soon)
 - Prometheus + Grafana (coming soon)
