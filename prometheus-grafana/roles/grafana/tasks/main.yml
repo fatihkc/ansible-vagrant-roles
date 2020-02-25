@@ -1,0 +1,17 @@
+---
+- name: Install Grafana packages
+  dnf:
+    name: 
+      - grafana
+    state: latest
+
+- name: Start Grafana service
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- firewalld:
+    port: 3000/tcp
+    permanent: yes
+    state: enabled

@@ -1,7 +1,6 @@
-## Install SonarQube with Ansible
+## Install JMeter with Ansible
 
-
-With this playbook you can simply install SonarQube on Vagrant virtual machines. You will install Java 11, PostgreSQL 12 and SonarQube 8.1.
+With this playbook you can simply install SonarQube on Vagrant virtual machines. You will install Java 11 and JMeter 5.2.
 
 Prerequisites;
 
@@ -18,4 +17,4 @@ For running this playbook use;
 
     ansible-playbook -i hosts site.yml
 
-    Then go to http://your_site_link:9000/sonar for SonarQube.
+Then use your JMeter with your GUI.

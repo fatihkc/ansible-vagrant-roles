@@ -19,3 +19,5 @@ This project includes;
 Playbooks are based on CentOS 8 and Ubuntu 18.04. They are not supporting both of them. Check README.md files.
 
 Most of the playbooks have their own Vagrantfile. Some of the projects like Kubernetes triggered when you create VMs.
+
+Firewall and SELinux settings will be added.

@@ -1,0 +1,10 @@
+---
+- name: Install Prometheus and Grafana
+  hosts: all
+  remote_user: vagrant
+  become: yes
+
+  roles:
+    - prometheus
+    - node_exporter
+    - grafana

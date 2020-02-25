@@ -1,0 +1,61 @@
+---
+- name: Add prometheus user
+  user:
+    name: prometheus
+    shell: /bin/false
+
+- name: Create directories for prometheus
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: 0775
+  with_items:
+    - /etc/prometheus
+    - /var/lib/prometheus
+
+- name: Download and extract Prometheus 2.16
+  unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v2.16.0/prometheus-2.16.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy prometheus binary
+  copy:
+    src: /tmp/prometheus-2.16.0.linux-amd64/prometheus
+    dest: /usr/local/bin/prometheus
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: yes
+
+- name: Copy promtool binary
+  copy:
+    src: /tmp/prometheus-2.16.0.linux-amd64/promtool
+    dest: /usr/local/bin/promtool
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: yes
+
+- name: Copy prometheus file
+  template: src=prometheus.yml dest=/etc/prometheus/prometheus.yml
+
+- firewalld:
+    port: 9090/tcp
+    permanent: yes
+    state: enabled
+
+- name: Copy prometheus systemd service file
+  template: src=prometheus.service dest=/etc/systemd/system/prometheus.service
+
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Start Prometheus service
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

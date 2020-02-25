@@ -1,0 +1,38 @@
+---
+- name: Add node_exporter
+  user:
+    name: node_exporter
+    shell: /bin/false
+
+- name: Download and extract node_exporter 0.18
+  unarchive:
+    src: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy node_exporter binary
+  copy:
+    src: /tmp/node_exporter-0.18.1.linux-amd64/node_exporter
+    dest: /usr/local/bin/node_exporter
+    owner: node_exporter
+    group: node_exporter
+    mode: '0755'
+    remote_src: yes
+
+- name: Copy node_exporter systemd service file
+  template: src=node_exporter.service dest=/etc/systemd/system/node_exporter.service
+
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Start node_exporter service
+  service:
+    name: node_exporter
+    state: started
+    enabled: yes
+
+- firewalld:
+    port: 9100/tcp
+    permanent: yes
+    state: enabled
