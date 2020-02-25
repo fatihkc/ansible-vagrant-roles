@@ -1,0 +1,6 @@
+---
+- name: Download and extract JMeter 5.2.1
+  unarchive:
+    src: http://ftp.itu.edu.tr/Mirror/Apache//jmeter/binaries/apache-jmeter-5.2.1.tgz
+    dest: /opt
+    remote_src: yes

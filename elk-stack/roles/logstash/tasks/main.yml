@@ -22,6 +22,4 @@
 
 - name: Copy output-elasticsearch config file
   template: src=output-elasticsearch.conf dest=/etc/logstash/conf.d/output-elasticsearch.conf
-
-- name: Start Logstash Service
-  service: name=logstash state=started enabled=yes
+  notify: start logstash

@@ -1,0 +1,34 @@
+---
+- name: start filebeat
+  service:
+    name: filebeat
+    state: started
+
+- name: restart filebeat
+  service: 
+    name: filebeat
+    state: restarted 
+    enabled: yes
+
+- name: stop filebeat
+  service:
+    name: filebeat
+    state: stopped
+  become: yes
+
+- name: start metricbeat
+  service:
+    name: metricbeat
+    state: started
+
+- name: restart metricbeat
+  service: 
+    name: metricbeat
+    state: restarted 
+    enabled: yes
+
+- name: stop metricbeat
+  service:
+    name: metricbeat
+    state: stopped
+  become: yes

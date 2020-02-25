@@ -10,11 +10,11 @@ This project includes;
 - ELK Stack
 - Sonarqube
 - NextCloud
-- JMeter (coming soon)
-- OpenLDAP (coming soon)
+- JMeter
 - Prometheus + Grafana (coming soon)
 - Zabbix (coming soon)
 - Nagios (coming soon)
+- OpenLDAP (coming soon)
 
 Playbooks are based on CentOS 8 and Ubuntu 18.04. They are not supporting both of them. Check README.md files.
 

@@ -10,12 +10,8 @@
 
 - name: Filebeat system module
   shell: filebeat modules enable system
-
-- name: Start Filebeat Service
-  service: name=filebeat state=started enabled=yes
+  notify: start filebeat
 
 - name: Install Metricbeat
   dnf: name=metricbeat state=present
-
-- name: Start Metricbeat Service
-  service: name=metricbeat state=started enabled=yes
+  notify: start metricbeat

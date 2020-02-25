@@ -33,5 +33,7 @@
    regexp: '-Xmx'
    line: '-Xmx1g'
 
-- name: Start Elasticsearch Service
-  service: name=elasticsearch state=started enabled=yes
+- name: start elasticsearch
+  service:
+    name: elasticsearch
+    state: started
